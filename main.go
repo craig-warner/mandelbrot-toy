@@ -881,7 +881,7 @@ func main() {
 	menuControl := fyne.NewMenu("Control", menuItemColor, menuItemSpeed, menuItemQuit)
 	// About Menu Set up
 	menuItemAbout := fyne.NewMenuItem("About...", func() {
-		dialog.ShowInformation("About Mandlbrot Toy v0.1.0", "Author: Craig Warner \n\ngithub.com/craig-warner/mandelbrot-toy", myWindow)
+		dialog.ShowInformation("About Mandlbrot Toy v1.0.0", "Author: Craig Warner \n\ngithub.com/craig-warner/mandelbrot-toy", myWindow)
 	})
 	menuHelp := fyne.NewMenu("Help ", menuItemAbout)
 	mainMenu := fyne.NewMainMenu(menuControl, menuHelp)

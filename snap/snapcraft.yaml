@@ -1,0 +1,40 @@
+name: mandelbrot-toy
+summary: A drawing program which wanders around the state space of the Mandelbrot Set
+description: |
+      This program constantly wanders around the Mandelbrot Set state space
+      drawing the Mandelbot.  The application user can select the color schemes,
+      drawing speed, and wndersng speed.  Mandelbort-toy is written in Go and
+      uses the Fyne.io graphical user intereface.
+adopt-info: mandelbrot-toy 
+base: core22
+
+confinement: devmode
+
+plugs:
+#   dot-config-woke:
+#     interface: personal-files
+#     read:
+#       - $HOME/.config/woke.yaml
+#       - $HOME/.config/woke.yml
+#      - $HOME/.woke.yaml
+#      - $HOME/.woke.yml
+
+apps:
+  mandelbrot-toy:
+    command: bin/mandelbrot-toy
+    plugs:
+      - home
+#      - dot-config-woke
+      - network
+      - removable-media
+
+parts:
+  mandelbrot-toy:
+    plugin: go
+    build-snaps: [go/latest/stable]
+    source: https://github.com/craig-warner/mandelbrot-toy
+    source-type: git
+    override-pull: |
+      snapcraftctl pull
+      snapcraftctl set-version \
+      "$(git describe --long --tags --always --match=v*.*.* | sed 's/v//')"
