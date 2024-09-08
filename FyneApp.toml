@@ -1,0 +1,8 @@
+Website = "https://github.com/craig-warner/mandelbrot/toy"
+
+[Details]
+Icon = "snap/gui/mandelbrot-toy.png"
+Name = "Mandelbrot Toy"
+ID = "com.warnerbits.mandelbrottoy"
+Version = "1.0.0"
+Build = 1
