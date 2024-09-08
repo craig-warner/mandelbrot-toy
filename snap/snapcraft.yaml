@@ -4,7 +4,7 @@ description: |
       This program constantly wanders around the Mandelbrot Set state space
       drawing the Mandelbot.  The application user can select the color schemes,
       drawing speed, and wndersng speed.  Mandelbort-toy is written in Go and
-      uses the Fyne.io graphical user intereface.
+      uses the Fyne.io graphical user interface.
 adopt-info: mandelbrot-toy 
 base: core22
 
