@@ -198,7 +198,9 @@ type Mandel struct {
 	span_one_dot float64
 	min_x, min_y float64
 	// Window
-	cur_w, cur_h int
+	cur_w, cur_h                          int
+	black_out_top, black_out_left         int
+	centering_top_adj, centering_left_adj int
 	// Colors
 	all_colors      []MandelColor
 	all_color_names []string
@@ -386,16 +388,34 @@ func (m *Mandel) ResetWindow(w, h int) {
 	m.cur_h = h
 	// New Mandelbrot Size
 	max_val := 0
+	min_val := 0
 	// Choose the smallest so it looks okay on Mobile platform
 	if w > h {
-		max_val = h
-	} else {
 		max_val = w
+		min_val = h
+	} else {
+		max_val = h
+		min_val = w
 	}
 	max_mult64 := (max_val / 64) * 64
+	min_mult64 := (min_val / 64) * 64
 	// scale
 	m.size = max_mult64
 	m.span_one_dot = m.span / float64(m.size)
+	// Blackout and Center
+	if max_val == w {
+		// wider than tall
+		m.black_out_left = (w - m.size) >> 1
+		m.centering_left_adj = 0
+		m.centering_top_adj = (m.size - min_mult64) >> 1
+		m.black_out_top = (h - min_mult64) >> 1
+	} else {
+		// taller than wide
+		m.black_out_left = (w - min_mult64) >> 1
+		m.centering_left_adj = (m.size - min_mult64) >> 1
+		m.centering_top_adj = 0
+		m.black_out_top = (h - m.size) >> 1
+	}
 	// Reset Drawing
 	m.ResetBasic()
 }
@@ -403,14 +423,35 @@ func (m *Mandel) ResetWindow(w, h int) {
 func (m *Mandel) DrawOneDot(px, py, w, h int) color.Color {
 	use_px := 0
 	use_py := 0
+	use_px = px
+	use_py = py
 	if (w != m.cur_w) || (h != m.cur_h) {
 		m.ResetWindow(w, h)
-		use_px = px % m.size
-		use_py = py % m.size
-	} else {
-		use_px = px
-		use_py = py
 	}
+
+	// color_px
+	color_px := use_px - m.black_out_left + m.centering_left_adj
+	color_py := use_py - m.black_out_top + m.centering_top_adj
+
+	// Black out or color
+	black_color := color.RGBA{0, 0, 0, 0xff}
+	if use_py < m.black_out_top {
+		// Top
+		return (black_color)
+	} else if use_py >= (m.black_out_top + m.size) {
+		// Bottom
+		return (black_color)
+	} else if use_px < m.black_out_left {
+		// Left
+		return (black_color)
+	} else if use_py >= (m.black_out_left + m.size) {
+		// Right
+		return (black_color)
+	} else {
+		return (m.DrawOneDotNotBlack(color_px, color_py))
+	}
+}
+func (m *Mandel) DrawOneDotNotBlack(use_px, use_py int) color.Color {
 	//fmt.Println("px:",px,"py:",py,"w:",w,"h:",h)
 	idx_x := 0
 	idx_y := 0
@@ -544,7 +585,7 @@ func (m *Mandel) RoamTgtScreenTwo(x, y float64) bool {
 		return true
 	} else if (f64_lower_right_iters / f64_max_iters) > good_pnt {
 		return true
-	} else if same_cnt > 3 {
+	} else if same_cnt > 2 {
 		return false
 	} else {
 		return true
@@ -693,10 +734,13 @@ func NewMandel() Mandel {
 		cur_granularity: 64,
 		up_to_date:      false,
 		// Math
+		//span:      3.0,
 		span:      3.0,
 		threshold: 1000.0,
-		min_x:     -1.0,
+		//		min_x:     -1.0,
+		min_x: -1.0,
 		//		max_x: 2.0,
+		//min_y: -1.5,
 		min_y: -1.5,
 		//	max_y: 1.5,
 		//Window
