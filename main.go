@@ -386,10 +386,11 @@ func (m *Mandel) ResetWindow(w, h int) {
 	m.cur_h = h
 	// New Mandelbrot Size
 	max_val := 0
+	// Choose the smallest so it looks okay on Mobile platform
 	if w > h {
-		max_val = w
-	} else {
 		max_val = h
+	} else {
+		max_val = w
 	}
 	max_mult64 := (max_val / 64) * 64
 	// scale
@@ -775,9 +776,12 @@ func main() {
 	myApp := app.New()
 	myWindow := myApp.NewWindow("Mandelbrot Toy")
 	myWindow.SetPadded(false)
-	//myWindow.Resize(fyne.NewSize(300, 300))
+
+	// Resize ignored by Mobile Platforms
+	// - Mobile platforms are always full screen
+	// - 27 is a hack determined by Ubuntu/Gnome
 	myWindow.Resize(fyne.NewSize(256, (256 + 27)))
-	//	myCanvas := myWindow.Canvas()
+
 	myMandel := NewMandel()
 	myMandel.RoamGenNewTgt()
 
@@ -881,7 +885,7 @@ func main() {
 	menuControl := fyne.NewMenu("Control", menuItemColor, menuItemSpeed, menuItemQuit)
 	// About Menu Set up
 	menuItemAbout := fyne.NewMenuItem("About...", func() {
-		dialog.ShowInformation("About Mandlbrot Toy v1.0.0", "Author: Craig Warner \n\ngithub.com/craig-warner/mandelbrot-toy", myWindow)
+		dialog.ShowInformation("About Mandelbrot Toy v1.0.0", "Author: Craig Warner \n\ngithub.com/craig-warner/mandelbrot-toy", myWindow)
 	})
 	menuHelp := fyne.NewMenu("Help ", menuItemAbout)
 	mainMenu := fyne.NewMainMenu(menuControl, menuHelp)
