@@ -11,6 +11,25 @@ Mandelbrot drawing program written in go using fyne.io
 # Building .apk for Android Studio
 ## msys-x64 
 % fyne package -os android -appID com.example.mandelbrottoy -icon assets/mandelbrot-toy.png
+## Installing .apk to Android Studio
+Drag Mandelbrot_Toy.apk to emulator icon
+
+# Building Windows 
+% fyne package -os windows -icon assets/mandelbrot-toy.png
+
+# Building Linux 
+% fyne package -os linux -icon assets/mandelbrot-toy.png
+## Installaion on Ubuntu 
+%tar xf 'Mandelbrot Toy.tar.xz'
+%sudo make install
+## Assumptions
+ * GOHOME = /home/craigwarner
+%sudo apt install libgl1-mesa-dev xorg-dev
+%go run -v main.go dict.go
+
+# Building .apk for Android Studio
+## msys-x64 
+% fyne package -os android -appID com.example.mandelbrottoy -icon assets/mandelbrot-toy.png
 % fyne package -os windows -icon assets/mandelbrot-toy.png
  
 # Installing .apk to Android Studio

@@ -5,4 +5,4 @@ Website = "https://github.com/craig-warner/mandelbrot/toy"
   Name = "Mandelbrot Toy"
   ID = "com.warnerbits.mandelbrottoy"
   Version = "1.0.0"
-  Build = 3
+  Build = 4
